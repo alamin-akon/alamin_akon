@@ -9,6 +9,13 @@ body { font-family: ui-sans-serif, system-ui, sans-serif; }
 .section-space { padding-block: clamp(4.75rem, 9vw, 8rem); }
 .text-gradient { background: linear-gradient(110deg, #7ea1ff 10%, #22d3ee 48%, #c39bff 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .hero-grid { background-image: linear-gradient(rgba(148,163,184,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,.07) 1px, transparent 1px); background-size: 54px 54px; mask-image: linear-gradient(to bottom, black 20%, transparent 92%); }
+.button-pop { position: relative; overflow: hidden; transform: translateZ(0); }
+.button-pop::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.28) 50%, transparent 75%); transform: translateX(-130%); transition: transform .65s ease; }
+.button-pop:hover { transform: translateY(-4px) scale(1.025); box-shadow: 0 16px 42px rgba(34,211,238,.2); }
+.button-pop:hover::after { transform: translateX(130%); }
+.interactive-card { position: relative; transition: transform .42s cubic-bezier(.16,1,.3,1), filter .42s ease; }
+.interactive-card:hover { transform: translateY(-12px) rotateX(1deg); filter: drop-shadow(0 22px 28px rgba(0,0,0,.24)); }
+.interactive-card:hover .group { transform: scale(1.02); }
 .skip-link { position: fixed; left: 1rem; top: -5rem; z-index: 100; border-radius: .5rem; background: white; color: #070b14; padding: .75rem 1rem; font-weight: 700; transition: top .2s; }
 .skip-link:focus { top: 1rem; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }

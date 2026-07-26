@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ArrowDown, ArrowRight, Braces, PenTool, ShoppingBag, Sparkles } from "lucide-react";
@@ -16,8 +17,9 @@ export function HeroSection() {
     const context = gsap.context(() => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       gsap.fromTo("[data-hero-reveal]", { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.75, stagger: 0.12, ease: "power3.out", delay: 0.1 });
-      gsap.to("[data-orbit]", { rotate: 360, duration: 28, repeat: -1, ease: "none" });
-      gsap.to("[data-float]", { y: -12, duration: 2.6, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: 0.35 });
+      gsap.to("[data-orbit]", { rotate: 360, duration: 22, repeat: -1, ease: "none" });
+      gsap.to("[data-float]", { y: -15, duration: 2.2, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: 0.28 });
+      gsap.to("[data-glow]", { scale: 1.22, opacity: 0.72, duration: 3.4, repeat: -1, yoyo: true, ease: "sine.inOut" });
     }, root);
     return () => context.revert();
   }, []);
@@ -45,17 +47,26 @@ export function HeroSection() {
 }
 
 function HeroVisual() {
-  return <div data-hero-reveal className="relative mx-auto w-full max-w-[520px]">
+  const visual = useRef<HTMLDivElement>(null);
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!visual.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const bounds = visual.current.getBoundingClientRect();
+    gsap.to(visual.current, { rotateY: ((event.clientX - bounds.left) / bounds.width - .5) * 8, rotateX: -((event.clientY - bounds.top) / bounds.height - .5) * 8, transformPerspective: 900, duration: .45, ease: "power2.out" });
+  };
+  const resetPointer = () => { if (visual.current) gsap.to(visual.current, { rotateX: 0, rotateY: 0, duration: .7, ease: "elastic.out(1,.45)" }); };
+  return <div data-hero-reveal className="relative mx-auto w-full max-w-[570px]" onPointerMove={handlePointerMove} onPointerLeave={resetPointer}>
     <div data-orbit className="absolute -inset-5 rounded-full border border-dashed border-primary/30" />
-    <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#111e43] via-[#10182b] to-[#25144d] p-4 shadow-2xl shadow-primary/15">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(34,211,238,.18),transparent_26%),radial-gradient(circle_at_20%_85%,rgba(139,92,246,.28),transparent_34%)]" />
+    <div ref={visual} className="relative aspect-square overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#111e43] via-[#10182b] to-[#25144d] p-4 shadow-2xl shadow-primary/25 transition-shadow duration-500 hover:shadow-primary/50">
+      <Image src="/images/hero-workspace.png" alt="Abstract 3D web design workspace" fill priority sizes="(max-width: 1024px) 90vw, 570px" className="object-cover opacity-55 mix-blend-screen" />
+      <div data-glow className="absolute inset-10 rounded-full bg-accent/25 blur-3xl" />
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(7,11,20,.1),rgba(7,11,20,.65))]" />
       <div className="relative h-full rounded-2xl border border-white/10 bg-[#0a1121]/75 p-4 backdrop-blur-sm">
         <div className="flex items-center justify-between border-b border-white/10 pb-3"><div className="flex gap-1.5"><i className="size-2 rounded-full bg-rose-400" /><i className="size-2 rounded-full bg-amber-300" /><i className="size-2 rounded-full bg-emerald-400" /></div><span className="font-mono text-[10px] text-slate-500">alaminakon.dev</span></div>
         <div className="pt-10"><p className="font-mono text-xs text-accent">&lt;creative-developer /&gt;</p><p className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">Ideas, made tangible.</p><div className="mt-7 grid grid-cols-2 gap-3"><MiniCard icon={<PenTool />} label="UI / UX" /><MiniCard icon={<ShoppingBag />} label="Shopify" /><MiniCard icon={<Braces />} label="Next.js" /><MiniCard icon={<Sparkles />} label="Creative" /></div></div>
       </div>
     </div>
-    <div data-float className="absolute -bottom-4 -left-5 rounded-2xl border border-white/15 bg-surface/90 p-3 shadow-xl backdrop-blur"><p className="text-xs font-semibold text-white">Responsive by design</p><p className="mt-1 text-[10px] text-text-secondary">Every screen, considered.</p></div>
-    <div data-float className="absolute -right-4 top-14 rounded-2xl border border-white/15 bg-surface/90 p-3 shadow-xl backdrop-blur"><p className="text-xs font-semibold text-accent">Shopify</p><p className="mt-1 text-[10px] text-text-secondary">Storefront specialist</p></div>
+    <div data-float className="absolute -bottom-4 -left-5 rounded-2xl border border-white/15 bg-surface/90 p-3 shadow-xl backdrop-blur transition hover:-translate-y-2 hover:border-accent/60"><p className="text-xs font-semibold text-white">Responsive by design</p><p className="mt-1 text-[10px] text-text-secondary">Every screen, considered.</p></div>
+    <div data-float className="absolute -right-4 top-14 rounded-2xl border border-white/15 bg-surface/90 p-3 shadow-xl backdrop-blur transition hover:-translate-y-2 hover:border-accent/60"><p className="text-xs font-semibold text-accent">Shopify</p><p className="mt-1 text-[10px] text-text-secondary">Storefront specialist</p></div>
   </div>;
 }
 

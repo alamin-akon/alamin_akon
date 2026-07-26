@@ -12,7 +12,7 @@ export function Button({ href, children, variant = "primary", className, externa
     ghost: "text-white hover:text-accent",
   };
   const content = <>{children}{external && <ArrowUpRight aria-hidden="true" className="size-4" />}</>;
-  const classes = cn("inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background", styles[variant], className);
+  const classes = cn("button-pop inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background", styles[variant], className);
   if (external) return <a href={href} target="_blank" rel="noreferrer" className={classes}>{content}</a>;
   return <Link href={href} className={classes}>{content}</Link>;
 }
