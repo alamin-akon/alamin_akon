@@ -1,0 +1,5 @@
+import { processSteps } from "@/data/skills";
+import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+export function ProcessSection() { return <section className="section-space"><Container><Reveal><SectionHeading eyebrow="How I work" title="A simple process, designed for clarity." description="A practical, collaborative path from early ideas to a finished digital experience." /></Reveal><div className="mt-12 grid gap-3 md:grid-cols-2 lg:grid-cols-3">{processSteps.map((step, index) => <Reveal key={step.number} delay={index * .05}><article className="relative overflow-hidden rounded-2xl border border-white/8 bg-white/[.02] p-6"><span className="font-mono text-xs font-bold text-primary">{step.number}</span><h3 className="mt-6 text-xl font-bold tracking-tight text-white">{step.title}</h3><p className="mt-3 text-sm leading-6 text-text-secondary">{step.description}</p></article></Reveal>)}</div></Container></section>; }

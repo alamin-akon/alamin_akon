@@ -1,0 +1,8 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import type { Project, ProjectCategory } from "@/types";
+import { ProjectCard } from "@/components/cards/ProjectCard";
+const filters: Array<"All" | ProjectCategory> = ["All", "Shopify", "Web Design", "UI/UX", "Front-End", "E-commerce"];
+export function ProjectExplorer({ projects }: { projects: Project[] }) { const [active, setActive] = useState<(typeof filters)[number]>("All"); const visible = useMemo(() => active === "All" ? projects : projects.filter((project) => project.categories.includes(active)), [active, projects]); return <><div className="flex flex-wrap gap-2" role="tablist" aria-label="Project categories">{filters.map((filter) => <button type="button" key={filter} role="tab" aria-selected={active === filter} onClick={() => setActive(filter)} className={`rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${active === filter ? "border-primary bg-primary text-white" : "border-white/10 bg-white/[.03] text-text-secondary hover:border-white/25 hover:text-white"}`}>{filter}</button>)}</div><motion.div layout className="mt-10 grid gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-3">{visible.map((project) => <motion.div layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .28 }} key={project.slug}><ProjectCard project={project}/></motion.div>)}</motion.div>{visible.length === 0 && <p className="py-14 text-center text-text-secondary">No projects in this category yet.</p>}</>; }
