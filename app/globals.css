@@ -1,11 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
-@theme inline { --color-background: var(--background); --color-surface: var(--surface); --color-surface-light: var(--surface-light); --color-primary: var(--primary); --color-secondary: var(--secondary); --color-accent: var(--accent); --color-text-primary: var(--text-primary); --color-text-secondary: var(--text-secondary); --font-sans: "Manrope", Arial, sans-serif; }
+@theme inline { --color-background: var(--background); --color-surface: var(--surface); --color-surface-light: var(--surface-light); --color-primary: var(--primary); --color-secondary: var(--secondary); --color-accent: var(--accent); --color-text-primary: var(--text-primary); --color-text-secondary: var(--text-secondary); --font-sans: ui-sans-serif, system-ui, sans-serif; }
 :root { --background: #070b14; --surface: #0d1424; --surface-light: #121c30; --primary: #4f7cff; --secondary: #8b5cf6; --accent: #22d3ee; --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: rgba(255,255,255,.08); }
 * { border-color: var(--border); }
 html { scroll-behavior: smooth; background: var(--background); }
-body { font-family: "Manrope", Arial, sans-serif; }
+body { font-family: ui-sans-serif, system-ui, sans-serif; }
 ::selection { background: rgba(79,124,255,.45); color: white; }
 .section-space { padding-block: clamp(4.75rem, 9vw, 8rem); }
 .text-gradient { background: linear-gradient(110deg, #7ea1ff 10%, #22d3ee 48%, #c39bff 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
