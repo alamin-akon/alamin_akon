@@ -38,6 +38,8 @@ body { font-family: ui-sans-serif, system-ui, sans-serif; }
 .creative-menu-item-mobile:hover .creative-menu-icon, .creative-menu-item-mobile:focus-visible .creative-menu-icon { transform: none; }
 .creative-header-button-type-c { --line-color: #0f172a; --back-color: #67e8f9; }
 .creative-header-button { position: relative; z-index: 0; display: block; width: 240px; height: 56px; color: var(--line-color); font-family: "Poppins", sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-align: center; text-decoration: none; text-shadow: none; transition: all .3s ease; }
+.header-sticky .creative-header-button-type-c { --line-color: #fff; --back-color: #67e8f9; }
+.header-sticky .creative-header-button { text-shadow: 0 0 12px rgb(255 255 255 / .35); }
 .creative-header-button-text { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; white-space: nowrap; }
 .creative-header-button::before, .creative-header-button::after, .creative-header-button-text::before, .creative-header-button-text::after { position: absolute; height: 3px; border-radius: 2px; background: var(--line-color); content: ""; transition: all .5s ease; }
 .creative-header-button::before { top: 0; left: 54px; width: calc(100% - 56px * 2 - 16px); }
@@ -77,7 +79,7 @@ body { font-family: ui-sans-serif, system-ui, sans-serif; }
 .hero-flip-button:hover .hero-flip-button-box::before, .hero-flip-button:focus-visible .hero-flip-button-box::before { transform: translateY(0); }
 .hero-arrow-cta { position: relative; display: inline-flex; align-items: center; margin: auto; border: 0; background: none; color: #0f172a; cursor: pointer; padding: 12px 18px; text-decoration: none; transition: all .2s ease; }
 .hero-arrow-cta::before { position: absolute; top: 0; left: 0; display: block; width: 45px; height: 45px; border-radius: 50px; background: #0e7490; content: ""; transition: all .3s ease; }
-.hero-arrow-cta span { position: relative; color: inherit; font-family: "Poppins", sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .05em; }
+.hero-arrow-cta span { position: relative; color: white; font-family: "Poppins", sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .05em; }
 .hero-arrow-cta svg { position: relative; top: 0; margin-left: 10px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; transform: translateX(-5px); transition: all .3s ease; }
 .hero-arrow-cta:hover::before, .hero-arrow-cta:focus-visible::before { width: 100%; background: #0891b2; }
 .hero-arrow-cta:hover svg, .hero-arrow-cta:focus-visible svg { transform: translateX(0); }

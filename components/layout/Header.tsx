@@ -38,7 +38,7 @@ export function Header() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  return <header style={{ padding: "25px 0" }} className={cn("fixed inset-x-0 top-0 z-50 transition duration-300", scrolled ? "border-b border-white/8 bg-background/85 shadow-2xl shadow-black/10 backdrop-blur-xl" : "bg-transparent")}>
+  return <header style={{ padding: "25px 0" }} className={cn("fixed inset-x-0 top-0 z-50 transition duration-300", scrolled ? "header-sticky border-b border-white/20 bg-transparent backdrop-blur-2xl" : "bg-transparent")}>
     <Container className="grid h-[76px] grid-cols-[1fr_auto_1fr] items-center">
       <Link href="/" className="group justify-self-start" aria-label="Alamin Akon home">
         <span className="relative block h-16 w-52 overflow-hidden rounded-xl">
