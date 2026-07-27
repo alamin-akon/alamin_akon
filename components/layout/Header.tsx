@@ -38,18 +38,19 @@ export function Header() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  return <header className={cn("fixed inset-x-0 top-0 z-50 transition duration-300", scrolled ? "border-b border-white/8 bg-background/85 shadow-2xl shadow-black/10 backdrop-blur-xl" : "bg-transparent")}>
-    <Container className="grid h-[76px] grid-cols-[1fr_auto_1fr] items-center lg:h-[126px] lg:pt-[50px]">
-      <Link href="/" className="group flex items-center gap-2 justify-self-start font-bold tracking-[-.045em] text-white" aria-label="Alamin Akon home">
-        <Image src="/brand-mark.svg" alt="" width={36} height={36} priority className="size-9 shadow-lg shadow-primary/25"/>
-        <span>Alamin Akon</span>
+  return <header style={{ padding: "25px 0" }} className={cn("fixed inset-x-0 top-0 z-50 transition duration-300", scrolled ? "border-b border-white/8 bg-background/85 shadow-2xl shadow-black/10 backdrop-blur-xl" : "bg-transparent")}>
+    <Container className="grid h-[76px] grid-cols-[1fr_auto_1fr] items-center">
+      <Link href="/" className="group justify-self-start" aria-label="Alamin Akon home">
+        <span className="relative block h-16 w-52 overflow-hidden rounded-xl">
+          <Image src="/images/alamin-akon-wordmark.png" alt="" fill priority sizes="208px" className="object-cover object-center brightness-[2.2] contrast-[1.12] saturate-150"/>
+        </span>
       </Link>
 
       <nav className="hidden items-center justify-self-center gap-[25px] lg:flex" aria-label="Main navigation">
         {navigation.map((item) => <CreativeMenuItem key={item.href} href={item.href} active={pathname === item.href}/>) }
       </nav>
 
-      <div className="hidden justify-self-end lg:block"><Button href="/contact" variant="primary">Let&apos;s Work Together</Button></div>
+      <div className="hidden justify-self-end lg:block"><HeaderActionButton/></div>
       <button type="button" onClick={() => setOpen(!open)} className="grid size-11 justify-self-end place-items-center rounded-xl border border-white/10 text-white lg:hidden" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Close navigation" : "Open navigation"}>{open ? <X /> : <Menu />}</button>
     </Container>
 
@@ -70,5 +71,15 @@ function CreativeMenuItem({ href, active, mobile = false, onClick }: { href: str
   return <Link href={href} onClick={onClick} aria-current={active ? "page" : undefined} style={style} className={cn("creative-menu-item", mobile && "creative-menu-item-mobile", active && "creative-menu-item-active")}>
     <Icon className="creative-menu-icon size-7" aria-hidden="true"/>
     <span className="creative-menu-text">{label}</span>
+  </Link>;
+}
+
+function HeaderActionButton() {
+  return <Link href="/contact" className="creative-header-button creative-header-button-type-c">
+    <span className="creative-header-button-line"/>
+    <span className="creative-header-button-line"/>
+    <span className="creative-header-button-text">Contact us</span>
+    <span className="creative-header-button-draw-one"/>
+    <span className="creative-header-button-draw-two"/>
   </Link>;
 }
