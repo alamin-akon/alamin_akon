@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
-import { ArrowDown, Braces, PenTool, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowDown, Braces, CheckCircle2, Download, PenTool, ShoppingBag, Sparkles } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 
 const highlights = ["Modern Web Design", "Shopify Customisation", "Responsive Development", "UI/UX Focused"];
@@ -34,7 +34,7 @@ export function HeroSection() {
             <div data-hero-reveal className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-cyan-100"><span className="size-1.5 rounded-full bg-accent shadow-[0_0_12px_#22d3ee]" />Hello, I&apos;m Alamin Akon</div>
             <h1 data-hero-reveal className="mt-6 max-w-4xl text-5xl font-extrabold leading-[.97] tracking-[-.065em] text-white sm:text-6xl lg:text-7xl">Web Designer, <span className="text-gradient">Shopify Specialist</span> and Front-End Developer.</h1>
             <p data-hero-reveal className="mt-6 max-w-2xl text-base leading-7 text-text-secondary sm:text-lg">I create responsive websites, Shopify stores and user-focused interfaces that combine professional design, practical functionality and smooth user experiences.</p>
-            <div data-hero-reveal className="mt-8 flex flex-wrap items-center gap-4"><HeroFancyButton href="/projects">View My Work</HeroFancyButton><HeroFancyButton href="/contact">Let&apos;s Work Together</HeroFancyButton><a href="/resume.pdf" className="inline-flex items-center gap-2 px-3 text-sm font-semibold text-slate-300 transition hover:text-accent">Download Resume <ArrowDown className="size-4" /></a></div>
+            <div data-hero-reveal className="mt-8 flex flex-wrap items-center gap-4"><HeroFlipButton href="/projects" label="VIEW" hoverLabel="WORK" ariaLabel="View my work"/><HeroFlipButton href="/contact" label="LET'S" hoverLabel="TALK!" ariaLabel="Let's work together"/><HeroDownloadButton/></div>
           </div>
           <HeroVisual />
         </div>
@@ -71,11 +71,20 @@ function HeroVisual() {
 
 function MiniCard({ icon, label }: { icon: ReactNode; label: string }) { return <div className="rounded-xl border border-white/10 bg-white/[.04] p-3 text-slate-200"><div className="size-4 text-accent">{icon}</div><p className="mt-5 text-xs font-semibold">{label}</p></div>; }
 
-function HeroFancyButton({ href, children }: { href: string; children: ReactNode }) {
-  return <Link className="hero-fancy-button" href={href}>
-    <span className="hero-fancy-button-top-key"/>
-    <span className="hero-fancy-button-text">{children}</span>
-    <span className="hero-fancy-button-bottom-key-one"/>
-    <span className="hero-fancy-button-bottom-key-two"/>
+function HeroFlipButton({ href, label, hoverLabel, ariaLabel }: { href: string; label: string; hoverLabel: string; ariaLabel: string }) {
+  return <Link className="hero-flip-button" href={href} aria-label={ariaLabel}>
+    {label.split("").map((letter, index) => <span key={`${letter}-${index}`} data-hover={hoverLabel[index] ?? ""} className="hero-flip-button-box">{letter}</span>)}
   </Link>;
+}
+
+function HeroDownloadButton() {
+  return <a href="/resume.pdf" download className="hero-download-button" aria-label="Download resume">
+    <span className="hero-download-button-outline"/>
+    <span className="hero-download-button-state hero-download-button-state-default"><span className="hero-download-button-icon"><Download/></span><AnimatedButtonText text="Download"/></span>
+    <span className="hero-download-button-state hero-download-button-state-sent"><span className="hero-download-button-icon"><CheckCircle2/></span><AnimatedButtonText text="Saved" start={5}/></span>
+  </a>;
+}
+
+function AnimatedButtonText({ text, start = 0 }: { text: string; start?: number }) {
+  return <span className="hero-download-button-letters">{text.split("").map((letter, index) => <span key={`${letter}-${index}`} style={{ "--i": start + index } as React.CSSProperties}>{letter}</span>)}</span>;
 }
