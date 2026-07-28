@@ -95,7 +95,7 @@ body { font-family: ui-sans-serif, system-ui, sans-serif; }
 .hero-cta:hover svg, .hero-cta:focus-visible svg { color: #fff; transform: translateX(3px) scale(1.08); }
 @keyframes hero-cta-gradient { 0%, 100% { background-position: 14% 0%; } 50% { background-position: 87% 100%; } }
 .footer-social-icons { display: flex; flex-wrap: wrap; gap: 12px; }
-.footer-social-icon { position: relative; display: grid; width: 52px; height: 52px; place-items: center; overflow: hidden; border-radius: 28%; background: #fff; box-shadow: 0 5px 15px -5px rgb(0 0 0 / .35); color: #67798e; opacity: .99; text-decoration: none; transition: all .35s cubic-bezier(.31,-.105,.43,1.59); }
+.footer-social-icon { position: relative; display: grid; width: 52px; height: 52px; place-items: center; overflow: hidden; border: 1px solid rgb(126 151 255 / .28); border-radius: 28%; background: rgb(13 20 36 / .9); box-shadow: inset 0 1px 0 rgb(255 255 255 / .06), 0 5px 15px -5px rgb(0 0 0 / .5); color: #b9c6e8; opacity: .99; text-decoration: none; transition: all .35s cubic-bezier(.31,-.105,.43,1.59); }
 .footer-social-icon::after { position: absolute; top: 90%; left: -110%; width: 120%; height: 120%; content: ""; transform: rotate(45deg); transition: all .35s cubic-bezier(.31,-.105,.43,1.59); }
 .footer-social-icon svg { position: relative; z-index: 1; transform: scale(.8); transition: all .35s cubic-bezier(.31,-.105,.43,1.59); }
 .footer-social-icon-fiverr::after { background: #1dbf73; }
