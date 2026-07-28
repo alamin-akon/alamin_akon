@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowUpRight, FolderOpen } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 
 export function HeroSection() {
@@ -21,24 +21,23 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section ref={root} className="relative isolate h-screen overflow-hidden bg-[#f0f0ee] pt-32 text-[#111] sm:pt-40">
-      <Image src="/images/editorial-rocks-hero-v2.png" alt="Black rocks rising from calm water" fill priority sizes="100vw" className="-z-20 object-cover object-center"/>
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(255,255,255,.14)_0%,rgba(255,255,255,0)_58%,rgba(0,0,0,.12)_100%)]"/>
-      <Container className="relative flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center pb-10 sm:min-h-[calc(100vh-10rem)] sm:pb-14">
-        <div className="flex w-full -translate-y-2 flex-col items-center text-center sm:translate-y-3">
-          <p data-hero-eyebrow className="text-[10px] font-bold uppercase tracking-[.38em] text-black/55 sm:text-xs">Web & Shopify design &amp; development</p>
-          <h1 data-hero-title className="editorial-display mt-8 select-none text-[clamp(4.8rem,13vw,13.5rem)] font-medium leading-[.68] tracking-[-.09em] text-[#080808]" aria-label="Alamin Akon"><span className="block">ALAMIN</span><span className="block">AKON</span></h1>
-          <p data-hero-subtitle className="mx-auto mt-10 max-w-md text-xs font-semibold uppercase tracking-[.2em] text-black/65 sm:text-sm">Web designer · Shopify specialist · Front-end developer</p>
-          <div data-hero-actions className="mt-10 flex flex-wrap items-center justify-center gap-4"><HeroFlipButton href="/projects" label="PROJECTS" hoverLabel="EXPLORE!" ariaLabel="Explore projects"/><HeroFlipButton href="/contact" label="CONTACT" hoverLabel="MESSAGE" ariaLabel="Contact me"/><a href="/resume.pdf" className="hero-arrow-cta"><span>Download Resume</span><svg width="15" height="10" viewBox="0 0 13 10" aria-hidden="true"><path d="M1,5 L11,5"/><polyline points="8 1 12 5 8 9"/></svg></a></div>
+    <section ref={root} className="relative isolate min-h-[760px] overflow-hidden bg-[#05060a] pt-28 text-white sm:min-h-screen sm:pt-36">
+      <div className="absolute inset-0 -z-30 bg-[radial-gradient(circle_at_69%_42%,rgba(39,73,220,.27),transparent_27%),radial-gradient(circle_at_88%_84%,rgba(113,43,255,.16),transparent_24%)]"/>
+      <div className="absolute inset-x-0 bottom-0 top-24 -z-20 opacity-80 sm:left-[20%] sm:top-12"><Image src="/images/hero-workspace.png" alt="Futuristic web design workspace" fill priority sizes="(max-width: 640px) 120vw, 82vw" className="object-cover object-[68%_center] sm:object-contain sm:object-right"/></div>
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#05060a_0%,rgba(5,6,10,.96)_27%,rgba(5,6,10,.32)_62%,rgba(5,6,10,.1)_100%)]"/>
+      <div className="absolute inset-x-0 bottom-0 h-2/5 -z-10 bg-gradient-to-t from-[#05060a] via-[#05060a]/65 to-transparent"/>
+      <p aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[46%] -z-10 w-max -translate-x-1/2 -translate-y-1/2 select-none text-[19vw] font-black leading-none tracking-[-.1em] text-white/[.045]">PORTFOLIO</p>
+
+      <Container className="relative flex min-h-[calc(760px-7rem)] flex-col justify-center pb-24 sm:min-h-[calc(100vh-9rem)] sm:pb-28">
+        <div className="max-w-xl pt-8 sm:pt-0">
+          <p data-hero-eyebrow className="text-xs font-semibold uppercase tracking-[.28em] text-cyan-200/75">Web &amp; Shopify design · Development</p>
+          <h1 data-hero-title className="mt-5 text-5xl font-black leading-[.92] tracking-[-.075em] text-white sm:text-7xl lg:text-8xl">Hi, I&apos;m <span className="block bg-gradient-to-r from-[#2f73ff] via-[#5687ff] to-[#8266ff] bg-clip-text text-transparent">Alamin Akon.</span></h1>
+          <p data-hero-subtitle className="mt-7 max-w-md text-base leading-7 text-slate-300 sm:text-lg">I create polished, responsive websites and Shopify experiences that turn ambitious ideas into clear digital products.</p>
+          <div data-hero-actions className="mt-9 flex flex-wrap gap-3"><Link href="/projects" className="inline-flex min-h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[.06] px-5 text-sm font-semibold text-white transition hover:border-cyan-300/60 hover:bg-white/[.12]"><FolderOpen className="size-4"/>View Projects</Link><Link href="/contact" className="inline-flex min-h-12 items-center gap-2 rounded-full bg-gradient-to-r from-[#2368ff] to-[#7352e7] px-5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(46,104,255,.28)] transition hover:scale-[1.03]"><span>Let&apos;s Work Together</span><ArrowUpRight className="size-4"/></Link></div>
         </div>
-        <Link href="#about" aria-label="Scroll to about section" className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 text-white transition hover:text-cyan-200 lg:block"><ArrowDown className="size-5 animate-bounce" /></Link>
+        <div className="absolute bottom-8 right-5 text-right sm:bottom-12 sm:right-8 lg:right-10"><p className="text-xs font-bold uppercase tracking-[.18em] text-[#8a6bff] sm:text-lg">UI/UX Designer</p><p className="mt-1 text-3xl font-black uppercase leading-[.85] tracking-[-.07em] text-white sm:text-5xl">Web<br/>Developer</p></div>
+        <Link href="#about" aria-label="Scroll to about section" className="absolute bottom-8 left-5 inline-flex flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-slate-400 transition hover:text-white sm:bottom-10 sm:left-8 lg:left-10"><span className="grid size-8 place-items-center rounded-full border border-white/25"><ArrowDown className="size-4 animate-bounce"/></span><span className="hidden sm:block">Scroll down</span></Link>
       </Container>
     </section>
   );
-}
-
-function HeroFlipButton({ href, label, hoverLabel, ariaLabel }: { href: string; label: string; hoverLabel: string; ariaLabel: string }) {
-  return <Link className="hero-flip-button" href={href} aria-label={ariaLabel}>
-    {label.split("").map((letter, index) => <span key={`${letter}-${index}`} data-hover={hoverLabel[index] ?? ""} className="hero-flip-button-box">{letter}</span>)}
-  </Link>;
 }
