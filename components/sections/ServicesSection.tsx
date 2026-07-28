@@ -28,12 +28,39 @@ export function ServicesSection({ limit }: { limit?: number }) {
     gsap.registerPlugin(ScrollTrigger);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const desktop = window.matchMedia("(min-width: 701px)").matches;
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cleanups: Array<() => void> = [];
 
     const context = gsap.context(() => {
       const panels = gsap.utils.toArray<HTMLElement>("[data-service-panel]");
       const images = gsap.utils.toArray<HTMLElement>("[data-service-image]");
       const details = gsap.utils.toArray<HTMLElement>("[data-service-detail]");
       if (!panels.length || reducedMotion) return;
+
+      const cursor = root.querySelector<HTMLElement>("[data-service-cursor]");
+      if (cursor && finePointer) {
+        const cursorX = gsap.quickTo(cursor, "x", { duration: .28, ease: "power3.out" });
+        const cursorY = gsap.quickTo(cursor, "y", { duration: .28, ease: "power3.out" });
+        const moveCursor = (event: PointerEvent) => {
+          const bounds = root.getBoundingClientRect();
+          cursorX(event.clientX - bounds.left);
+          cursorY(event.clientY - bounds.top);
+        };
+        const showCursor = (event: PointerEvent) => {
+          moveCursor(event);
+          gsap.to(cursor, { autoAlpha: 1, scale: 1, duration: .2, ease: "power2.out" });
+        };
+        const hideCursor = () => gsap.to(cursor, { autoAlpha: 0, scale: .6, duration: .2, ease: "power2.out" });
+        gsap.set(cursor, { autoAlpha: 0, scale: .6 });
+        root.addEventListener("pointermove", moveCursor);
+        root.addEventListener("pointerenter", showCursor);
+        root.addEventListener("pointerleave", hideCursor);
+        cleanups.push(() => {
+          root.removeEventListener("pointermove", moveCursor);
+          root.removeEventListener("pointerenter", showCursor);
+          root.removeEventListener("pointerleave", hideCursor);
+        });
+      }
 
       const enter = gsap.timeline({
         scrollTrigger: { trigger: root, start: "top 80%", once: true, invalidateOnRefresh: true },
@@ -63,7 +90,10 @@ export function ServicesSection({ limit }: { limit?: number }) {
       enter.call(() => cycle.play(), [], ">-.1");
     }, root);
 
-    return () => context.revert();
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
+      context.revert();
+    };
   }, []);
 
   return (
@@ -84,6 +114,7 @@ export function ServicesSection({ limit }: { limit?: number }) {
           <div ref={animationRoot} className="services-reference-frame">
             <span className="services-reference-brand">Alamin Akon</span>
             <span className="services-reference-note">Digital design and development</span>
+            <span data-service-cursor className="services-reference-cursor" aria-hidden="true">✱</span>
             <div className="services-reference-grid">
               {displayedPanels.map((panel, index) => (
                 <article
