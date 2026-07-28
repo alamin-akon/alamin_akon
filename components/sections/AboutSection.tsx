@@ -52,19 +52,19 @@ export function AboutSection() {
       if (canUsePointer) {
         const panel = section.querySelector<HTMLElement>("[data-about-panel]");
         if (panel) {
-          const panelX = gsap.quickTo(panel, "--panel-x", { duration: .45, ease: "power3.out" });
-          const panelY = gsap.quickTo(panel, "--panel-y", { duration: .45, ease: "power3.out" });
+          const panelX = gsap.quickTo(panel, "--panel-x", { duration: .45, ease: "power3.out", unit: "px" });
+          const panelY = gsap.quickTo(panel, "--panel-y", { duration: .45, ease: "power3.out", unit: "px" });
           const handlePanelMove = (event: PointerEvent) => {
             const bounds = panel.getBoundingClientRect();
             const x = (event.clientX - bounds.left) / bounds.width - .5;
             const y = (event.clientY - bounds.top) / bounds.height - .5;
-            panelX(`${x * 12}px`);
-            panelY(`${y * 9}px`);
+            panelX(x * 12);
+            panelY(y * 9);
             gsap.to(panel, { rotateY: x * 2, rotateX: y * -1.5, duration: .45, ease: "power3.out", overwrite: true });
           };
           const resetPanel = () => {
-            panelX("0px");
-            panelY("0px");
+            panelX(0);
+            panelY(0);
             gsap.to(panel, { rotateY: 0, rotateX: 0, duration: .6, ease: "power3.out", overwrite: true });
           };
           panel.addEventListener("pointermove", handlePanelMove);
@@ -73,12 +73,12 @@ export function AboutSection() {
         }
 
         section.querySelectorAll<HTMLElement>("[data-about-card]").forEach((card) => {
-          const glowX = gsap.quickTo(card, "--mouse-x", { duration: .22, ease: "power3.out" });
-          const glowY = gsap.quickTo(card, "--mouse-y", { duration: .22, ease: "power3.out" });
+          const glowX = gsap.quickTo(card, "--mouse-x", { duration: .22, ease: "power3.out", unit: "px" });
+          const glowY = gsap.quickTo(card, "--mouse-y", { duration: .22, ease: "power3.out", unit: "px" });
           const handleCardMove = (event: PointerEvent) => {
             const bounds = card.getBoundingClientRect();
-            glowX(`${event.clientX - bounds.left}px`);
-            glowY(`${event.clientY - bounds.top}px`);
+            glowX(event.clientX - bounds.left);
+            glowY(event.clientY - bounds.top);
           };
           card.addEventListener("pointermove", handleCardMove);
           cleanups.push(() => card.removeEventListener("pointermove", handleCardMove));
