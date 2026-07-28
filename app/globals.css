@@ -104,6 +104,7 @@ body { font-family: ui-sans-serif, system-ui, sans-serif; }
 .footer-social-icon-facebook::after { background: #1769ff; }
 .footer-social-icon-instagram::after { background: #fb3958; }
 .footer-social-icon-tiktok::after { background: #010101; }
+.footer-social-icon-fiverr svg { width: 2em; height: 2em; }
 .footer-social-icon:hover, .footer-social-icon:focus-visible { box-shadow: 0 8px 20px -5px rgb(0 0 0 / .5); color: #fff; outline: none; transform: translateY(-4px); }
 .footer-social-icon:hover::after, .footer-social-icon:focus-visible::after { top: -10%; left: -10%; }
 .footer-social-icon:hover svg, .footer-social-icon:focus-visible svg { transform: scale(1); }
