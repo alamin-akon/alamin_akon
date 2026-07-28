@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -20,6 +20,7 @@ const servicePanels = [
 
 export function ServicesSection({ limit }: { limit?: number }) {
   const animationRoot = useRef<HTMLDivElement>(null);
+  const [activePanel, setActivePanel] = useState<number | null>(null);
   const displayedPanels = servicePanels.slice(0, limit ?? servicePanels.length);
 
   useGSAP(() => {
@@ -28,92 +29,67 @@ export function ServicesSection({ limit }: { limit?: number }) {
 
     gsap.registerPlugin(ScrollTrigger);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const desktop = window.matchMedia("(min-width: 701px)").matches;
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const cleanups: Array<() => void> = [];
-
     const panels = gsap.utils.toArray<HTMLElement>("[data-service-panel]");
-    const images = gsap.utils.toArray<HTMLElement>("[data-service-image]");
-    const details = gsap.utils.toArray<HTMLElement>("[data-service-detail]");
     if (!panels.length || reducedMotion) return;
-
-    const cursor = root.querySelector<HTMLElement>("[data-service-cursor]");
-    if (cursor && finePointer) {
-        const cursorX = gsap.quickTo(cursor, "x", { duration: .28, ease: "power3.out" });
-        const cursorY = gsap.quickTo(cursor, "y", { duration: .28, ease: "power3.out" });
-        const moveCursor = (event: PointerEvent) => {
-          const bounds = root.getBoundingClientRect();
-          cursorX(event.clientX - bounds.left);
-          cursorY(event.clientY - bounds.top);
-        };
-        const showCursor = (event: PointerEvent) => {
-          moveCursor(event);
-          gsap.to(cursor, { autoAlpha: 1, scale: 1, duration: .2, ease: "power2.out" });
-        };
-        const hideCursor = () => gsap.to(cursor, { autoAlpha: 0, scale: .6, duration: .2, ease: "power2.out" });
-        gsap.set(cursor, { autoAlpha: 0, scale: .6 });
-        root.addEventListener("pointermove", moveCursor);
-        root.addEventListener("pointerenter", showCursor);
-        root.addEventListener("pointerleave", hideCursor);
-      cleanups.push(() => {
-        root.removeEventListener("pointermove", moveCursor);
-        root.removeEventListener("pointerenter", showCursor);
-        root.removeEventListener("pointerleave", hideCursor);
-      });
-    }
 
     const enter = gsap.timeline({
       scrollTrigger: { trigger: root, start: "top 80%", once: true, invalidateOnRefresh: true },
     });
-
     enter
       .fromTo(root, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: .75, ease: "power3.out" })
       .fromTo(panels, { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, duration: .65, stagger: .1, ease: "power3.out" }, .08);
 
-    if (!desktop) return;
+    const cursor = root.querySelector<HTMLElement>("[data-service-cursor]");
+    if (!cursor || !finePointer) return;
 
-    gsap.set(images, { autoAlpha: .16, scale: 1.1, clipPath: "inset(35% 0 35% 0)" });
-    gsap.set(details, { autoAlpha: 0, y: 14 });
+    const cursorX = gsap.quickTo(cursor, "x", { duration: .28, ease: "power3.out" });
+    const cursorY = gsap.quickTo(cursor, "y", { duration: .28, ease: "power3.out" });
+    const moveCursor = (event: PointerEvent) => {
+      const bounds = root.getBoundingClientRect();
+      cursorX(event.clientX - bounds.left);
+      cursorY(event.clientY - bounds.top);
+    };
+    const showCursor = (event: PointerEvent) => {
+      moveCursor(event);
+      gsap.to(cursor, { autoAlpha: 1, scale: 1, duration: .2, ease: "power2.out" });
+    };
+    const hideCursor = () => gsap.to(cursor, { autoAlpha: 0, scale: .6, duration: .2, ease: "power2.out" });
 
-    const revealPanel = (index: number, duration = .7) => gsap.timeline()
-      .to(panels, { flexGrow: 1, duration, ease: "power3.inOut" })
-      .to(panels[index], { flexGrow: 2.45, duration, ease: "power3.inOut" }, "<")
-      .to(images, { autoAlpha: .12, scale: 1.1, clipPath: "inset(35% 0 35% 0)", duration: duration * .8, ease: "power2.out" }, "<")
-      .to(images[index], { autoAlpha: .76, scale: 1.02, clipPath: "inset(0% 0 0% 0)", duration, ease: "power3.out" }, "<")
-      .to(details, { autoAlpha: 0, y: 14, duration: .2, overwrite: true }, "<")
-      .to(details[index], { autoAlpha: 1, y: 0, duration: .45, ease: "power3.out" }, "<.2");
+    gsap.set(cursor, { autoAlpha: 0, scale: .6 });
+    root.addEventListener("pointermove", moveCursor);
+    root.addEventListener("pointerenter", showCursor);
+    root.addEventListener("pointerleave", hideCursor);
+    return () => {
+      root.removeEventListener("pointermove", moveCursor);
+      root.removeEventListener("pointerenter", showCursor);
+      root.removeEventListener("pointerleave", hideCursor);
+    };
+  }, { scope: animationRoot });
 
-    const cycle = gsap.timeline({ paused: true, repeat: -1, repeatDelay: .45 });
-    panels.forEach((_, index) => {
-      cycle.add(revealPanel(index)).to({}, { duration: 2.1 });
-    });
+  useGSAP(() => {
+    const root = animationRoot.current;
+    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.matchMedia("(min-width: 701px)").matches) return;
 
-    if (finePointer) {
-      panels.forEach((panel, index) => {
-        const previewPanel = () => {
-          cycle.pause();
-          if (cursor) gsap.to(cursor, { rotate: index % 2 ? 45 : -25, scale: 1.22, duration: .3, ease: "power3.out" });
-          revealPanel(index, .5);
-        };
-        const resumeCycle = () => {
-          if (cursor) gsap.to(cursor, { rotate: 0, scale: 1, duration: .35, ease: "power3.out" });
-          cycle.play();
-        };
-        panel.addEventListener("pointerenter", previewPanel);
-        panel.addEventListener("pointerleave", resumeCycle);
-        cleanups.push(() => {
-          panel.removeEventListener("pointerenter", previewPanel);
-          panel.removeEventListener("pointerleave", resumeCycle);
-        });
-      });
+    const panels = gsap.utils.toArray<HTMLElement>("[data-service-panel]");
+    const details = gsap.utils.toArray<HTMLElement>("[data-service-detail]");
+    const images = gsap.utils.toArray<HTMLElement>("[data-service-image]");
+    if (activePanel === null) {
+      gsap.to(panels, { flexGrow: 1, duration: .7, ease: "power3.inOut", overwrite: true });
+      gsap.to(images, { scale: 1.05, duration: .55, ease: "power2.out", overwrite: true });
+      gsap.to(details, { autoAlpha: 0, y: 14, duration: .25, ease: "power2.out", overwrite: true });
+      return;
     }
 
-    enter.call(() => cycle.play(), [], ">-.1");
+    gsap.to(panels, { flexGrow: .62, duration: .7, ease: "power3.inOut", overwrite: true });
+    gsap.to(panels[activePanel], { flexGrow: 3.15, duration: .7, ease: "power3.inOut", overwrite: true });
+    gsap.to(images, { scale: 1.05, duration: .55, ease: "power2.out", overwrite: true });
+    gsap.to(images[activePanel], { scale: 1, duration: .7, ease: "power3.out", overwrite: true });
+    gsap.to(details, { autoAlpha: 0, y: 14, duration: .2, ease: "power2.out", overwrite: true });
+    gsap.to(details[activePanel], { autoAlpha: 1, y: 0, duration: .45, delay: .18, ease: "power3.out", overwrite: true });
+  }, { scope: animationRoot, dependencies: [activePanel] });
 
-    return () => {
-      cleanups.forEach((cleanup) => cleanup());
-    };
-  }, { scope: animationRoot, dependencies: [displayedPanels.length] });
+  const togglePanel = (index: number) => setActivePanel((current) => current === index ? null : index);
 
   return (
     <section className="section-space">
@@ -135,23 +111,37 @@ export function ServicesSection({ limit }: { limit?: number }) {
             <span className="services-reference-note">Digital design and development</span>
             <span data-service-cursor className="services-reference-cursor" aria-hidden="true">✱</span>
             <div className="services-reference-grid">
-              {displayedPanels.map((panel, index) => (
-                <article
-                  data-service-panel
-                  className={`services-reference-panel services-reference-panel--${index + 1}`}
-                  key={panel.title}
-                >
-                  <span data-service-image className="services-reference-image" aria-hidden="true">
-                    <Image src={panel.image} alt="" fill sizes="(max-width: 700px) 100vw, 25vw" style={{ objectFit: "cover", objectPosition: panel.position }} />
-                  </span>
-                  <span data-service-detail className="services-reference-detail">
-                    <span>{panel.eyebrow}</span>
-                    <span>{panel.description}</span>
-                    <span>Explore service <ArrowUpRight className="size-4" /></span>
-                  </span>
-                  <h3>{panel.title}</h3>
-                </article>
-              ))}
+              {displayedPanels.map((panel, index) => {
+                const isActive = activePanel === index;
+                return (
+                  <article
+                    data-service-panel
+                    className={`services-reference-panel ${isActive ? "is-active" : ""}`}
+                    key={panel.title}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={isActive}
+                    onClick={() => togglePanel(index)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        togglePanel(index);
+                      }
+                    }}
+                  >
+                    <span data-service-image className="services-reference-image" aria-hidden="true">
+                      <Image src={panel.image} alt="" fill sizes="(max-width: 700px) 100vw, 25vw" style={{ objectFit: "cover", objectPosition: panel.position }} />
+                    </span>
+                    <span className="services-reference-shutter" aria-hidden="true" />
+                    <span data-service-detail className="services-reference-detail">
+                      <span>{panel.eyebrow}</span>
+                      <span>{panel.description}</span>
+                      <span>Explore service <ArrowUpRight className="size-4" /></span>
+                    </span>
+                    <h3>{panel.title}</h3>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </Reveal>
