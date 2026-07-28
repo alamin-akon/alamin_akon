@@ -35,7 +35,7 @@ export function HeroSection() {
           <p data-hero-subtitle className="mt-7 max-w-md text-base leading-7 text-slate-300 sm:text-lg">I create polished, responsive websites and Shopify experiences that turn ambitious ideas into clear digital products.</p>
           <div data-hero-actions className="mt-9 flex flex-wrap gap-3"><Link href="/projects" className="hero-cta"><FolderOpen className="size-4"/><span>View Projects</span></Link><Link href="/contact" className="hero-cta"><span>Let&apos;s Work Together</span><ArrowUpRight className="size-4"/></Link></div>
         </div>
-        <div className="absolute bottom-8 right-5 text-right sm:bottom-12 sm:right-8 lg:right-10"><p className="text-xs font-bold uppercase tracking-[.18em] text-[#8a6bff] sm:text-lg">UI/UX Designer</p><p className="mt-1 text-3xl font-black uppercase leading-[.85] tracking-[-.07em] text-white sm:text-5xl">Web<br/>Developer</p></div>
+        <div className="absolute bottom-8 right-5 text-right sm:bottom-12 sm:right-8 lg:right-10"><p className="text-xs font-bold uppercase tracking-[.18em] text-[#8a6bff] sm:text-lg">Shopify Specialist</p><p className="mt-1 text-3xl font-black uppercase leading-[.85] tracking-[-.07em] text-white sm:text-5xl">Web<br/>Developer</p></div>
         <Link href="#about" aria-label="Scroll to about section" className="absolute bottom-8 left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-slate-400 transition hover:text-white sm:bottom-10"><span className="grid size-8 place-items-center rounded-full border border-white/25"><ArrowDown className="size-4 animate-bounce"/></span><span className="hidden sm:block">Scroll down</span></Link>
       </Container>
     </section>
