@@ -1,42 +1,70 @@
 "use client";
 
+import type { CSSProperties } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { useState, type CSSProperties } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 const servicePanels = [
-  {
-    title: "Web Design",
-    eyebrow: "Clarity through design",
-    description: "Purposeful pages that make your brand feel clear, credible and memorable.",
-    image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    title: "Development",
-    eyebrow: "Built to perform",
-    description: "Fast, responsive websites built with clean code and thoughtful interaction.",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    title: "UI/UX Design",
-    eyebrow: "Made for people",
-    description: "Intuitive interfaces that guide people naturally from first click to action.",
-    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1400&q=85",
-  },
-  {
-    title: "Shopify",
-    eyebrow: "Commerce with care",
-    description: "Storefront experiences that make discovering and buying products feel easy.",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=85",
-  },
+  { title: "Web Design", eyebrow: "Clear visual direction", description: "Websites that feel distinctive, clear and built around your brand.", image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1400&q=85" },
+  { title: "Development", eyebrow: "Built to perform", description: "Fast, responsive websites with clean front-end development.", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=85" },
+  { title: "UI/UX Design", eyebrow: "Made for people", description: "Intuitive interfaces that guide visitors naturally to action.", image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1400&q=85" },
+  { title: "Shopify", eyebrow: "Commerce with care", description: "Thoughtful storefronts designed for easier product discovery and sales.", image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=85" },
 ] as const;
 
 export function ServicesSection({ limit }: { limit?: number }) {
-  const [activePanel, setActivePanel] = useState(0);
+  const animationRoot = useRef<HTMLDivElement>(null);
   const displayedPanels = servicePanels.slice(0, limit ?? servicePanels.length);
+
+  useLayoutEffect(() => {
+    const root = animationRoot.current;
+    if (!root) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const desktop = window.matchMedia("(min-width: 701px)").matches;
+
+    const context = gsap.context(() => {
+      const panels = gsap.utils.toArray<HTMLElement>("[data-service-panel]");
+      const images = gsap.utils.toArray<HTMLElement>("[data-service-image]");
+      const details = gsap.utils.toArray<HTMLElement>("[data-service-detail]");
+      if (!panels.length || reducedMotion) return;
+
+      const enter = gsap.timeline({
+        scrollTrigger: { trigger: root, start: "top 80%", once: true, invalidateOnRefresh: true },
+      });
+
+      enter
+        .fromTo(root, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: .75, ease: "power3.out" })
+        .fromTo(panels, { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, duration: .65, stagger: .1, ease: "power3.out" }, .08);
+
+      if (!desktop) return;
+
+      gsap.set(images, { autoAlpha: .18, scale: 1.08 });
+      gsap.set(details, { autoAlpha: 0, y: 14 });
+
+      const cycle = gsap.timeline({ paused: true, repeat: -1, repeatDelay: .45 });
+      panels.forEach((panel, index) => {
+        cycle
+          .to(panels, { flexGrow: 1, duration: .7, ease: "power3.inOut" })
+          .to(panel, { flexGrow: 2.45, duration: .7, ease: "power3.inOut" }, "<")
+          .to(images, { autoAlpha: .14, scale: 1.08, duration: .55, ease: "power2.out" }, "<")
+          .to(images[index], { autoAlpha: .72, scale: 1, duration: .7, ease: "power3.out" }, "<")
+          .to(details, { autoAlpha: 0, y: 14, duration: .2, overwrite: true }, "<")
+          .to(details[index], { autoAlpha: 1, y: 0, duration: .45, ease: "power3.out" }, "<.22")
+          .to(panel, { duration: 2.1 });
+      });
+
+      enter.call(() => cycle.play(), [], ">-.1");
+    }, root);
+
+    return () => context.revert();
+  }, []);
 
   return (
     <section className="section-space">
@@ -53,32 +81,27 @@ export function ServicesSection({ limit }: { limit?: number }) {
         </div>
 
         <Reveal className="mt-12">
-          <div className="services-showcase" onMouseLeave={() => setActivePanel(0)}>
-            <span className="services-showcase-brand" aria-hidden="true">Alamin Akon</span>
-            <p className="services-showcase-note" aria-hidden="true">Designing useful digital experiences</p>
-            {displayedPanels.map((panel, index) => {
-              const isActive = activePanel === index;
-              return (
-                <button
-                  type="button"
+          <div ref={animationRoot} className="services-reference-frame">
+            <span className="services-reference-brand">Alamin Akon</span>
+            <span className="services-reference-note">Digital design and development</span>
+            <div className="services-reference-grid">
+              {displayedPanels.map((panel, index) => (
+                <article
+                  data-service-panel
+                  className={`services-reference-panel services-reference-panel--${index + 1}`}
                   key={panel.title}
-                  className={`services-showcase-panel ${isActive ? "is-active" : ""}`}
                   style={{ "--service-image": `url(${panel.image})` } as CSSProperties}
-                  onMouseEnter={() => setActivePanel(index)}
-                  onFocus={() => setActivePanel(index)}
-                  onClick={() => setActivePanel(index)}
-                  aria-pressed={isActive}
                 >
-                  <span className="services-showcase-image" aria-hidden="true" />
-                  <span className="services-showcase-copy">
-                    <span className="services-showcase-eyebrow">{panel.eyebrow}</span>
-                    <span className="services-showcase-description">{panel.description}</span>
-                    <span className="services-showcase-action">Explore service <ArrowUpRight className="size-4" /></span>
+                  <span data-service-image className="services-reference-image" aria-hidden="true" />
+                  <span data-service-detail className="services-reference-detail">
+                    <span>{panel.eyebrow}</span>
+                    <span>{panel.description}</span>
+                    <span>Explore service <ArrowUpRight className="size-4" /></span>
                   </span>
-                  <span className="services-showcase-title">{panel.title}</span>
-                </button>
-              );
-            })}
+                  <h3>{panel.title}</h3>
+                </article>
+              ))}
+            </div>
           </div>
         </Reveal>
       </Container>
