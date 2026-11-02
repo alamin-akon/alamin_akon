@@ -1,6 +1,6 @@
 import type { StaticImageData } from "next/image";
 
-export type ProjectCategory = "Shopify" | "Web Design" | "UI/UX" | "Front-End" | "E-commerce";
+export type ProjectCategory = "Shopify" | "Next.js" | "Web Design" | "UI/UX" | "Front-End" | "E-commerce";
 
 export interface NavigationItem { label: string; href: string; }
 export interface SocialLink { label: string; href: string; }
