@@ -1,3 +1,5 @@
+import type { StaticImageData } from "next/image";
+
 export type ProjectCategory = "Shopify" | "Web Design" | "UI/UX" | "Front-End" | "E-commerce";
 
 export interface NavigationItem { label: string; href: string; }
@@ -9,4 +11,5 @@ export interface Project {
   slug: string; title: string; industry: string; platform: string; description: string;
   services: string[]; technologies: string[]; website: string; categories: ProjectCategory[];
   goal: string; workCompleted: string[]; responsiveNote: string; accent: string;
+  image?: StaticImageData;
 }
