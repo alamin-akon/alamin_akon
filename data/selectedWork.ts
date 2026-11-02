@@ -1,8 +1,8 @@
 import type { StaticImageData } from "next/image";
-import healthNookImage from "@/public/projects/health-nook.png";
-import cycologyGearImage from "@/public/projects/cycology-gear.png";
-import queBonitoImage from "@/public/projects/que-bonito.png";
-import avenueSocietyImage from "@/public/projects/avenue-society.png";
+import healthNookImage from "@/public/projects/health-nook.webp";
+import cycologyGearImage from "@/public/projects/cycology-gear.webp";
+import queBonitoImage from "@/public/projects/que-bonito.webp";
+import avenueSocietyImage from "@/public/projects/avenue-society.webp";
 
 export type SelectedWorkProject = {
   id: number;

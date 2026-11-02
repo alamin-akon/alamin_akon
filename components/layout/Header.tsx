@@ -16,7 +16,7 @@ const menuAppearance = {
   "/": { icon: House, label: "Home", from: "#a955ff", to: "#ea51ff" },
   "/about": { icon: UserRound, label: "About", from: "#56CCF2", to: "#2F80ed" },
   "/services": { icon: BriefcaseBusiness, label: "Service", from: "#FF9966", to: "#FF5E62" },
-  "/projects": { icon: Snowflake, label: "Blog", from: "#80FF72", to: "#7EE8FA" },
+  "/projects": { icon: Snowflake, label: "Projects", from: "#80FF72", to: "#7EE8FA" },
   "/contact": { icon: PhoneCall, label: "Contact", from: "#ffa9c6", to: "#f434e2" },
 } as const;
 

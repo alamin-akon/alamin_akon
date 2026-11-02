@@ -1,6 +1,17 @@
+import Image from "next/image";
+import type { StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
 
-export function ProjectPreview({ title, industry, accent, className }: { title: string; industry: string; accent: string; className?: string }) {
+export function ProjectPreview({ title, industry, accent, image, className }: { title: string; industry: string; accent: string; image?: StaticImageData; className?: string }) {
+  if (image) {
+    return <div className={cn("group relative aspect-[1.23/1] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br p-3", accent, className)}>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,.26),transparent_33%)]" />
+      <div className="relative h-full overflow-hidden rounded-xl border border-slate-900/15 shadow-2xl">
+        <Image src={image} alt={`${title} — ${industry} website preview`} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover object-top transition duration-500 group-hover:scale-[1.025]" />
+      </div>
+    </div>;
+  }
+
   return <div className={cn("group relative aspect-[1.23/1] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br p-3", accent, className)}>
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,.26),transparent_33%)]" />
     <div className="relative h-full overflow-hidden rounded-xl border border-slate-900/15 bg-[#f7f9ff] p-2 shadow-2xl transition duration-500 group-hover:scale-[1.025]">
