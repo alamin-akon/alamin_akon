@@ -62,7 +62,7 @@ export const selectedWorkProjects: SelectedWorkProject[] = [
     platform: "Next.js",
     description: "A premium website built with Next.js, focused on refined visuals, responsive interaction, performance and a polished user experience.",
     image: avenueSocietyImage,
-    url: "https://avenue-society.netlify.app/",
+    url: "https://avenue-sc.vercel.app/",
     tags: ["Next.js", "Web Design"],
     accent: "#a78bfa",
   },
